@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PixelRig - Reseñas de Hardware por Alan Paniagua</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Librería para generar el código QR dinámicamente -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         /* --- ESTILOS GENERALES Y VARIABLES --- */
         :root {
@@ -417,7 +415,7 @@
             color: var(--texto-secundario);
         }
 
-        /* --- NUEVO BLOQUE DE CÓDIGO QR --- */
+        /* --- ESTILOS DEL CONTENEDOR DEL CÓDIGO QR --- */
         .qr-container {
             background-color: var(--bg-secundario);
             border: 1px solid var(--borde);
@@ -438,13 +436,6 @@
             font-size: 12px;
             color: var(--texto-secundario);
             margin-bottom: 15px;
-        }
-
-        #qrcode {
-            display: inline-block;
-            background: white;
-            padding: 10px;
-            border-radius: 6px;
         }
 
         /* --- COMPARATIVA DESTACADA --- */
@@ -757,7 +748,7 @@
             </div>
         </div>
 
-        <!-- SECCIÓN DOBLE COLUMNA -->
+        <!-- SECCIÓN DOBLE COLUMNA: RENDIMIENTO Y GUÍAS -->
         <div class="two-columns">
             <div>
                 <div class="section-header">
@@ -811,7 +802,9 @@
                 <div class="qr-container">
                     <h4>Compartir Sitio Web</h4>
                     <p>Escanea este código para abrir esta página en tu smartphone.</p>
-                    <div id="qrcode"></div>
+                    <div style="background: white; padding: 10px; display: inline-block; border-radius: 6px;">
+                        <img id="qr-image" src="" alt="Código QR" style="width: 140px; height: 140px; display: block;">
+                    </div>
                 </div>
             </div>
         </div>
@@ -928,25 +921,24 @@
         </div>
     </footer>
 
-    <!-- SCRIPT DE CONTROL PARA GENERAR EL QR -->
+    <!-- SCRIPT SEGURO PARA GENERAR EL QR CON GOOGLE API -->
     <script>
-        // Obtiene automáticamente la ubicación actual de la página
+        // Captura automáticamente el enlace del navegador
         var urlActual = window.location.href;
 
-        // Si se abre de forma puramente local desde un archivo, usa una URL genérica demostrativa
+        // Si se abre localmente en la computadora, crea un código de prueba personalizado
         if (urlActual.startsWith("file://")) {
-            urlActual = "https://alanpaniagua.github.io/pixelrig"; 
+            urlActual = "Proyecto Local de Alan Paniagua Mendez"; 
         }
 
-        // Renderiza el código QR dentro del contenedor #qrcode
-        new QRCode(document.getElementById("qrcode"), {
-            text: urlActual,
-            width: 140,
-            height: 140,
-            colorDark : "#0b0f19",
-            colorLight : "#ffffff",
-            correctLevel : QRCode.CorrectLevel.H
-        });
+        // Convierte el texto para que sea compatible con URLs
+        var textoCodificado = encodeURIComponent(urlActual);
+
+        // Llama a la API estable de Google para dibujar la imagen del QR
+        var googleQR = "https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=" + textoCodificado + "&choe=UTF-8";
+
+        // Asigna el QR directamente a la etiqueta de imagen
+        document.getElementById("qr-image").src = googleQR;
     </script>
 </body>
 </html>
